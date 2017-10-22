@@ -1,0 +1,349 @@
+IDENTIFICATION: CDS header
+	Length:0
+
+USAF: Identification FIXED-WEATHER-STATION USAF MASTER STATION CATALOG identifier
+
+	The identifier that represents a FIXED-WEATHER-STATION. 
+	Length:6
+
+NCDC: Identification FIXED-WEATHER-STATION NCDC WBAN identifier
+
+	The identifier that represents a FIXED-WEATHER-STATION. 
+	Length:5
+
+DATE: Identification GEOPHYSICAL-POINT-OBSERVATION date
+
+	The date of a GEOPHYSICAL-POINT-OBSERVATION. 
+	Length:8
+
+HRMN: Identification GEOPHYSICAL-POINT-OBSERVATION time
+
+	The time of a GEOPHYSICAL-POINT-OBSERVATION based on Coordinated Universal 
+	Time Code (UTC). 
+	Length:4
+
+I: Identification GEOPHYSICAL-POINT-OBSERVATION data source flag
+
+	The flag of a GEOPHYSICAL-POINT-OBSERVATION showing the source or combination 
+	of sources used in creating the observation. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	1: USAF hourly observation, candidate for merge with NCDC Surface Hourly (not yet merged, failed element cross-checks)
+	2: NCDC hourly observation, candidate for merge with USAF Surface Hourly (not yet merged, failed element cross-checks)
+	3: USAF hourly/NCDC hourly merged observation
+	4: USAF Surface Hourly observation
+	5: NCDC hourly observation
+	6: ASOS/AWOS observation from NCDC*
+	7: ASOS/AWOS observation merged with USAF Surface Hourly observation*
+	8: MAPSO observation (NCDC)*
+	A: USAF hourly/NCDC hourly precipitation merged observation, candidate for merge with NCDC Surface Hourly (not yet merged, failed element cross-checks)
+	B: NCDC hourly/NCDC hourly precipitation merged observation, candidate for merge with USAF Surface Hourly (not yet merged, failed element cross-checks)
+	C: USAF hourly/NCDC hourly/NCDC hourly precipitation merged observation
+	D: USAF hourly/NCDC hourly precipitation merged observation
+	E: NCDC hourly/NCDC hourly precipitation merged observation
+	F: Form OMR/1001 - Weather Bureau city office (keyed data)*
+	G: SAO surface airways observation, pre-1949 (keyed data)*
+	H: SAO surface airways observation, 1965-1981 format/period (keyed data)*
+	I: Climate Reference Network observation*
+	J: Cooperative Network observation*
+	K: Radiation Network observation*
+	L: Data from Climate Data Modernization Program (CDMP) data source*
+	M: National Renewable Energy Laboratory (NREL)*
+	N: NCAR / NCDC cooperative effort (various national datasets)*
+	
+
+TYPE: Identification GEOPHYSICAL-REPORT-TYPE code
+
+	The code that denotes the type of geophysical surface observation. 
+	Length:5
+	Default Value:99999
+	Table of Values:
+
+	AERO: Aerological report
+	AUST: Dataset from Australia*
+	AUTO: Report from an automatic station
+	BOGUS: Bogus report
+	BRAZ: Dataset from Brazil*
+	COOPD: US Cooperative Network summary of day report*
+	COOPS: US Cooperative Network soil temperature report*
+	CRB: Climate Reference Book data from CDMP*
+	CRN05: Climate Reference Network report, with 5-minute reporting interval*
+	CRN15: Climate Reference Network report, with 15-minute reporting interval*
+	FM-12: SYNOP Report of surface observation form a fixed land station
+	FM-13: SHIP Report of surface observation from a sea station
+	FM-14: SYNOP MOBIL Report of surface observation from a mobile land station
+	FM-15: METAR Aviation routine weather report
+	FM-16: SPECI Aviation selected special weather report
+	FM-18: BUOY Report of a buoy observation
+	GREEN: Dataset from Greenland*
+	MEXIC: Dataset from Mexico*
+	NSRDB: National Solar Radiation Data Base
+	PCP15: US 15-minute precipitation network report*
+	PCP60: US 60-minute precipitation network report*
+	S-S-A: Synoptic, airways, and auto merged report
+	SA-AU: Airways and auto merged report
+	SAO: Airways report (includes record specials)
+	SAOSP: Airways special report (excluding record specials)
+	SMARS: Supplementary airways station report
+	SOD: Summary of day report from U.S. ASOS or AWOS station*
+	SOM: Summary of month report from U.S. ASOS or AWOS station*
+	SURF: Surface Radiation Network report*
+	SY-AE: Synoptic and aero merged report
+	SY-AU: Synoptic and auto merged report
+	SY-MT: Synoptic and METAR merged report
+	SY-SA: Synoptic and airways merged report
+	WBO: Weather Bureau Office*
+	WNO: Washington Naval Observatory
+	
+
+PRECIP: LIQUID-PRECIPITATION (Hourly) header
+	Length:3
+
+PR: LIQUID-PRECIPITATION (Hourly) period quantity in hours
+
+	The quantity of time over which the LIQUID-PRECIPITATION was measured. 
+	
+	Length:2
+	Scale:1
+	Unit:Hours
+	Default Value:99
+
+AMT: LIQUID-PRECIPITATION (Hourly) depth dimension
+
+	The depth of LIQUID-PRECIPITATION that is measured at the time of an observation. 
+	
+	Length:4
+	Scale:10
+	Unit:Millimeters
+	Default Value:9999
+
+I: LIQUID-PRECIPITATION (Hourly) condition code
+
+	The code that denotes whether a LIQUID-PRECIPITATION depth dimension was 
+	a trace value. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	1: Measurement impossible or inaccurate
+	2: Trace
+	3: Begin accumulated period (precip amount missing until end of accumulated period)
+	4: End accumulated period
+	5: Begin deleted period (precip amount missing due to data problem)
+	6: End deleted period
+	7: Begin missing period
+	8: End missing period
+	E: Estimated data value (eg, from nearby station)
+	I: Incomplete precipitation amount, excludes one or more missing reports, such as one or more 15-minute reports not included in the 1-hour precip total
+	J: Incomplete precipitation amount, excludes one or more erroneous reports, such as one or more 1-hour precip amounts excluded from the 24-hour total
+	
+
+Q: LIQUID-PRECIPITATION (Hourly) quality code
+
+	The code that denotes a quality status of the reported LIQUID-PRECIPITATION 
+	data. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	0: Passed gross limits check
+	1: Passed all quality control checks
+	2: Suspect
+	3: Erroneous
+	4: Passed gross limits check, data originates from an NCDC data source
+	5: Passed all quality control checks, data originate from an NCDC data source
+	6: Suspect, data originate from an NCDC data source
+	7: Erroneous, data originate from an NCDC data source
+	9: Passed gross limits check if element is present
+	
+
+PRECIP: LIQUID-PRECIPITATION (Hourly) header #2
+	Length:3
+
+PR: LIQUID-PRECIPITATION (Hourly) #2 period quantity in hours
+
+	The quantity of time over which the LIQUID-PRECIPITATION was measured. 
+	
+	Length:2
+	Scale:1
+	Unit:Hours
+	Default Value:99
+
+AMT: LIQUID-PRECIPITATION (Hourly) #2 depth dimension
+
+	The depth of LIQUID-PRECIPITATION that is measured at the time of an observation. 
+	
+	Length:4
+	Scale:10
+	Unit:Millimeters
+	Default Value:9999
+
+I: LIQUID-PRECIPITATION (Hourly) #2 condition code
+
+	The code that denotes whether a LIQUID-PRECIPITATION depth dimension was 
+	a trace value. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	1: Measurement impossible or inaccurate
+	2: Trace
+	3: Begin accumulated period (precip amount missing until end of accumulated period)
+	4: End accumulated period
+	5: Begin deleted period (precip amount missing due to data problem)
+	6: End deleted period
+	7: Begin missing period
+	8: End missing period
+	E: Estimated data value (eg, from nearby station)
+	I: Incomplete precipitation amount, excludes one or more missing reports, such as one or more 15-minute reports not included in the 1-hour precip total
+	J: Incomplete precipitation amount, excludes one or more erroneous reports, such as one or more 1-hour precip amounts excluded from the 24-hour total
+	
+
+Q: LIQUID-PRECIPITATION (Hourly) #2 quality code
+
+	The code that denotes a quality status of the reported LIQUID-PRECIPITATION 
+	data. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	0: Passed gross limits check
+	1: Passed all quality control checks
+	2: Suspect
+	3: Erroneous
+	4: Passed gross limits check, data originates from an NCDC data source
+	5: Passed all quality control checks, data originate from an NCDC data source
+	6: Suspect, data originate from an NCDC data source
+	7: Erroneous, data originate from an NCDC data source
+	9: Passed gross limits check if element is present
+	
+
+PRECIP: LIQUID-PRECIPITATION (Hourly) header #3
+	Length:3
+
+PR: LIQUID-PRECIPITATION (Hourly) #3 period quantity in hours
+
+	The quantity of time over which the LIQUID-PRECIPITATION was measured. 
+	
+	Length:2
+	Scale:1
+	Unit:Hours
+	Default Value:99
+
+AMT: LIQUID-PRECIPITATION (Hourly) #3 depth dimension
+
+	The depth of LIQUID-PRECIPITATION that is measured at the time of an observation. 
+	
+	Length:4
+	Scale:10
+	Unit:Millimeters
+	Default Value:9999
+
+I: LIQUID-PRECIPITATION (Hourly) #3 condition code
+
+	The code that denotes whether a LIQUID-PRECIPITATION depth dimension was 
+	a trace value. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	1: Measurement impossible or inaccurate
+	2: Trace
+	3: Begin accumulated period (precip amount missing until end of accumulated period)
+	4: End accumulated period
+	5: Begin deleted period (precip amount missing due to data problem)
+	6: End deleted period
+	7: Begin missing period
+	8: End missing period
+	E: Estimated data value (eg, from nearby station)
+	I: Incomplete precipitation amount, excludes one or more missing reports, such as one or more 15-minute reports not included in the 1-hour precip total
+	J: Incomplete precipitation amount, excludes one or more erroneous reports, such as one or more 1-hour precip amounts excluded from the 24-hour total
+	
+
+Q: LIQUID-PRECIPITATION (Hourly) #3 quality code
+
+	The code that denotes a quality status of the reported LIQUID-PRECIPITATION 
+	data. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	0: Passed gross limits check
+	1: Passed all quality control checks
+	2: Suspect
+	3: Erroneous
+	4: Passed gross limits check, data originates from an NCDC data source
+	5: Passed all quality control checks, data originate from an NCDC data source
+	6: Suspect, data originate from an NCDC data source
+	7: Erroneous, data originate from an NCDC data source
+	9: Passed gross limits check if element is present
+	
+
+PRECIP: LIQUID-PRECIPITATION (Hourly) header #4
+	Length:3
+
+PR: LIQUID-PRECIPITATION (Hourly) #4 period quantity in hours
+
+	The quantity of time over which the LIQUID-PRECIPITATION was measured. 
+	
+	Length:2
+	Scale:1
+	Unit:Hours
+	Default Value:99
+
+AMT: LIQUID-PRECIPITATION (Hourly) #4 depth dimension
+
+	The depth of LIQUID-PRECIPITATION that is measured at the time of an observation. 
+	
+	Length:4
+	Scale:10
+	Unit:Millimeters
+	Default Value:9999
+
+I: LIQUID-PRECIPITATION (Hourly) #4 condition code
+
+	The code that denotes whether a LIQUID-PRECIPITATION depth dimension was 
+	a trace value. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	1: Measurement impossible or inaccurate
+	2: Trace
+	3: Begin accumulated period (precip amount missing until end of accumulated period)
+	4: End accumulated period
+	5: Begin deleted period (precip amount missing due to data problem)
+	6: End deleted period
+	7: Begin missing period
+	8: End missing period
+	E: Estimated data value (eg, from nearby station)
+	I: Incomplete precipitation amount, excludes one or more missing reports, such as one or more 15-minute reports not included in the 1-hour precip total
+	J: Incomplete precipitation amount, excludes one or more erroneous reports, such as one or more 1-hour precip amounts excluded from the 24-hour total
+	
+
+Q: LIQUID-PRECIPITATION (Hourly) #4 quality code
+
+	The code that denotes a quality status of the reported LIQUID-PRECIPITATION 
+	data. 
+	Length:1
+	Default Value:9
+	Table of Values:
+
+	0: Passed gross limits check
+	1: Passed all quality control checks
+	2: Suspect
+	3: Erroneous
+	4: Passed gross limits check, data originates from an NCDC data source
+	5: Passed all quality control checks, data originate from an NCDC data source
+	6: Suspect, data originate from an NCDC data source
+	7: Erroneous, data originate from an NCDC data source
+	9: Passed gross limits check if element is present
+	
+
+QCP: Identification METEOROLOGICAL-POINT-OBSERVATION quality control process name
+
+	The name of the quality control process applied to a weather observation. 
+	
+	Length:4
