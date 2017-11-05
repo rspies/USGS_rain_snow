@@ -8,11 +8,15 @@
 import os
 import matplotlib.pyplot as plt
 from matplotlib import cm
+from matplotlib import ticker
 import numpy as np
-maindir = os.getcwd()[:-27]
+plt.ioff()
+os.chdir("..")
+maindir = os.getcwd() + os.sep
+
 
 ### User input data ###
-TSNOW = 33.0
+TSNOW = 32.0
 temp_max = 36
 temp_min = 28
 dd_min = 0
@@ -32,7 +36,10 @@ fig = plt.figure()
 ax1 = fig.add_subplot(111)
 cmap=cm.coolwarm
 image = ax1.imshow(final_snotmp, cmap=cmap,extent=[dd_min,dd_max,temp_min,temp_max],interpolation='none')
-cbar = fig.colorbar(image,shrink=0.6)
+cbar = fig.colorbar(image,shrink=0.6,format='%.1f')
+tick_locator = ticker.MaxNLocator(nbins=11,min_n_ticks=11)
+cbar.locator = tick_locator
+cbar.update_ticks()
 
 #### color bar properties ###
 text = 'SNOTMP Temperature (' + r'$^o$F)'
@@ -42,5 +49,5 @@ cbar.ax.set_ylabel(text, rotation=270,labelpad=20)
 ax1.set_xlabel('Dewpoint Depression (' + r'$^o$F)' + '\n' + '(Air Temperature - Dewpoint Temperature)')
 ax1.set_ylabel('Air Temperature (' + r'$^o$F)')
 ax1.set_title('SNOTMP Distribution\n (TSNOW = ' + str(TSNOW) + r'$^o$F)')
-plt.savefig(maindir + '\\figures\\rain_snow\\' + 'HSPF_SNOTMP_distribution_' + str(TSNOW) + '_final.png', dpi=150, bbox_inches='tight')
+plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + 'HSPF_SNOTMP_distribution_' + str(TSNOW) + '_final.png', dpi=150, bbox_inches='tight')
 print 'Completed!!!'
