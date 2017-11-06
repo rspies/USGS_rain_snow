@@ -13,15 +13,15 @@ import my_plot_module
 import module_parse_txt
 plt.ioff()
 
-os.chdir("../..")
+os.chdir("..")
 maindir = os.getcwd() + os.sep
 min_temp = start_temp = 23.0 #23.0 (use for % plot) #25.0 (use for bar plot)
 max_temp = 36.0 #36.0 #35.6
 temp_interval = 0.5 #0.5 #1.0
 cat_num = (max_temp - min_temp)/temp_interval
-temp_source = 'argonne' # choices: ['asos', 'argonne'] -> selects the temp source for the bar chart
-bar_plot = 'no' # choices: ['yes', 'no'] -> this creates the bar chart
-percent_plot = 'yes' # choices: ['yes', 'no'] -> 'yes' automatically adds plots for argonne and asos temps
+temp_source = 'asos' # choices: ['asos', 'argonne'] -> selects the temp source for the bar chart
+bar_plot = 'yes' # choices: ['yes', 'no'] -> this creates the bar chart
+percent_plot = 'no' # choices: ['yes', 'no'] -> 'yes' automatically adds plots for argonne and asos temps
 asos_name = {'KORD':'Chicago OHare','KLOT':'Romeoville/Lewis University','KDPA':'DuPage Airport','KPWK':'Palwaukee'}
 if percent_plot == 'yes' and bar_plot == 'no':
     temp_source = ['asos', 'argonne']
@@ -177,7 +177,7 @@ for station in station_files:
             ax1.set_xticklabels(tick_labels,rotation=45)
         ax1.legend(loc='upper right')
         if temp_source == 'asos':
-            plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] + '.png', dpi=150, bbox_inches='tight')
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] + str(temp_interval)+'.png', dpi=150, bbox_inches='tight')
         if temp_source == 'argonne':
             plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] + 'argonne_temp.png', dpi=150, bbox_inches='tight')
     else:
