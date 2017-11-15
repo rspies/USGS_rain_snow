@@ -108,7 +108,7 @@ def pcnt_rain_snow(rain,snow,categories,rpcnt,spcnt,x):
     num_cat = 1
     while num_cat <= len(categories): 
         kitty = 'cat' + str(num_cat)
-        mean_cat = round(np.mean(categories[kitty]),2)
+        mean_cat = round(np.mean(categories[kitty]),2) # mean temperatue of the temp bin (middle of the defining bounds)
         if kitty in snow:
             tot_snow = len(snow[kitty])
         else:

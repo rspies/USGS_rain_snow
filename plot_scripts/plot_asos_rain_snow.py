@@ -15,9 +15,9 @@ plt.ioff()
 
 os.chdir("..")
 maindir = os.getcwd() + os.sep
-min_temp = start_temp = 23.0 #23.0 (use for % plot) #25.0 (use for bar plot)
-max_temp = 36.0 #36.0 #35.6
-temp_interval = 0.5 #0.5 #1.0
+min_temp = start_temp = 27.6 #23.0 (use for % plot) #25.0 (ANL bar plot) #28.6 (asos bar plot)
+max_temp = 36.6 #36.0 (ANL bar plot) #35.6 (asos bar plot)
+temp_interval = 1.0 #0.5 (ANL bar plot) #1.0 (asos bar plot)
 cat_num = (max_temp - min_temp)/temp_interval
 temp_source = 'asos' # choices: ['asos', 'argonne'] -> selects the temp source for the bar chart
 bar_plot = 'yes' # choices: ['yes', 'no'] -> this creates the bar chart
@@ -25,6 +25,10 @@ percent_plot = 'no' # choices: ['yes', 'no'] -> 'yes' automatically adds plots f
 asos_name = {'KORD':'Chicago OHare','KLOT':'Romeoville/Lewis University','KDPA':'DuPage Airport','KPWK':'Palwaukee'}
 if percent_plot == 'yes' and bar_plot == 'no':
     temp_source = ['asos', 'argonne']
+    min_temp = start_temp = 23.0
+    max_temp = 36.0
+    temp_interval = 0.5
+    cat_num = (max_temp - min_temp)/temp_interval
 
 ################### Create temperature range categories ########################
 categories = {}
@@ -36,10 +40,22 @@ while min_temp < max_temp:
 print len(categories)
 print categories
 
+if percent_plot == 'yes': # need a second group of temp categories for asos percent plot (values in whole deg F)
+    categories_asos = {}
+    cat_cnt = 1
+    min_temp = start_temp
+    temp_interval_asos = 1.0
+    while min_temp < max_temp:
+        categories_asos['cat'+str(cat_cnt)] = [min_temp,(min_temp + temp_interval_asos)-0.1]
+        cat_cnt +=1
+        min_temp += temp_interval_asos
+else:
+    categories_asos = categories
+
 ################## Parse Argonne temperature file ################################    
 ################# create a list of days to use in the analysis ########################
 ystart = 2006 # begin data grouping
-yend = 2011 # end data grouping
+yend = 2013 # end data grouping
 start = datetime.datetime(ystart, 1, 1, 0, 0)
 finish = datetime.datetime(yend, 9, 30, 23, 0)
 
@@ -79,22 +95,24 @@ for station in station_files:
         fopen = open(maindir + 'data\\asos\\processed_temp_prec\\' + station, 'r')
         for lines in fopen:
             each_line = lines.split('\t')
-            type_event = each_line[2].rstrip()
-            temp = float(each_line[1])
-            for key in categories:
-                if temp >= categories[key][0] and temp <= categories[key][1]:
-                    key_in = key
-
-                    if type_event == 'Rain':
-                        if key_in in rain:
-                            rain[key_in].append(temp)
-                        else:
-                            rain[key_in] = [temp]
-                    if type_event == 'Snow':
-                        if key_in in snow:
-                            snow[key_in].append(temp)
-                        else:
-                            snow[key_in] = [temp]                
+            dt_check = parser.parse(each_line[0])
+            if dt_check >= start and dt_check <= finish: # check date/time within search range defined above
+                type_event = each_line[2].rstrip()
+                temp = float(each_line[1])
+                for key in categories_asos:
+                    if temp >= categories_asos[key][0] and temp <= categories_asos[key][1]:
+                        key_in = key
+    
+                        if type_event == 'Rain':
+                            if key_in in rain:
+                                rain[key_in].append(temp)
+                            else:
+                                rain[key_in] = [temp]
+                        if type_event == 'Snow':
+                            if key_in in snow:
+                                snow[key_in].append(temp)
+                            else:
+                                snow[key_in] = [temp]                
         fopen.close()
 #################### Pair Argonne Temperature with ASOS weather obs ############            
     if temp_source == 'argonne' or percent_plot == 'yes':
@@ -177,9 +195,9 @@ for station in station_files:
             ax1.set_xticklabels(tick_labels,rotation=45)
         ax1.legend(loc='upper right')
         if temp_source == 'asos':
-            plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] + str(temp_interval)+'.png', dpi=150, bbox_inches='tight')
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] +'_'+temp_source+'_'+str(ystart)+'_'+str(yend)+'.png', dpi=150, bbox_inches='tight')
         if temp_source == 'argonne':
-            plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] + 'argonne_temp.png', dpi=150, bbox_inches='tight')
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4]+'_'+temp_source+'_temp_'+str(ystart)+'_'+str(yend)+'.png', dpi=150, bbox_inches='tight')
     else:
         print 'User chose not to plot bar chart'
 ######################### add rain/snow percent plot ##########################    
@@ -188,9 +206,10 @@ for station in station_files:
         fig = plt.figure()
         ax2 = fig.add_subplot(111)
         rpcnt = []; spcnt = []; x=[]
-        module_parse_txt.pcnt_rain_snow(rain,snow,categories,rpcnt,spcnt,x)
+        module_parse_txt.pcnt_rain_snow(rain,snow,categories_asos,rpcnt,spcnt,x)
         x_new, y_new, solve = my_plot_module.curve_fit(x,rpcnt)
         print 'rain % solve temp = ' + str(round(solve[-2],2))
+        #x_plot = [round(num) for num in x] # round asos values down for plotting whole num degrees
         ax2.plot(x,rpcnt,color='red',marker = 'o', ls = '')
         ax2.plot(x_new,y_new,color='red', lw = 1.5,label='Rain - ASOS')
         x_new, y_new, solve = my_plot_module.curve_fit(x,spcnt)
@@ -216,7 +235,7 @@ for station in station_files:
         ax2.grid(True)
         ax2.set_title(asos_name[station[:-4].upper()] + ' (' + station[:-4].upper() + ')'+ '\n' + str(start.month) + '/' + str(start.day) + '/' + str(start.year) + ' - ' + str(finish.month) + '/' + str(finish.day) + '/' + str(finish.year))
         ax2.legend(loc='center left')   
-        plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] + '_r-s_percent.png', dpi=150, bbox_inches='tight')
+        plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] + '_r-s_percent_'+str(ystart)+'_'+str(yend) + '.png', dpi=150, bbox_inches='tight')
 
 #close('all') #closes all figure windows
 print 'Complete'
