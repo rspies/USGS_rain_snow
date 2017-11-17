@@ -1,0 +1,6 @@
+Analysis period:2006-01-01 00:00:00 - 2011-09-30 23:00:00
+Site	ASOS rain/snow tempF	ANL rain/snow tempF
+KDPA	33.66	33.0
+KLOT	33.46	33.16
+KORD	33.26	33.15
+KPWK	33.3	33.05

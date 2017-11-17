@@ -10,16 +10,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 from dateutil import parser
 import datetime
+plt.ioff()
 
-os.chdir('../..')
-maindir = os.getcwd()+os.sep
-min_temp = start_temp = 31.0    #31.5
+## set working dir
+os.chdir("..")
+maindir = os.getcwd() + os.sep
+
+#################### input parameters ########################
+min_temp = start_temp = 31.0    #31.5 # 31.0
 max_temp = 35.0                 #35.0 #35.6 #33.5
 temp_interval = 0.5             #1.0
 cat_num = (max_temp - min_temp)/temp_interval
 asos_name = {'KORD':'Chicago OHare','KLOT':'Romeoville/Lewis University','KDPA':'DuPage Airport','KPWK':'Palwaukee'}
-tsnow = 32.5
-
+tsnow = 32.5                    # 32.5 32.0 31.5
+plot_out = 'yes' # 'yes' or 'no' for saving the plot (can run for just stats output)
+summary_out = maindir + '\\figures\\rain_snow\\final\\SNOTMP_obs_plots\\' 
 ################### Create temperature range categories ########################
 categories = {}
 cat_cnt = 1
@@ -79,14 +84,19 @@ for lines in fopen:
 fopen.close()
 ################# create a list of days to use in the analysis ########################
 ystart = 2006 # begin data grouping
-yend = 2011 # end data grouping
+yend = 2013 # end data grouping
 start = datetime.datetime(ystart, 1, 1, 0, 0)
 finish = datetime.datetime(yend, 9, 30, 23, 0)
 
 ################## Parse each ASOS precip type file ################################    
 print 'Processing rain/snow temperature file...'
 station_files = os.listdir(maindir + 'data\\asos\\processed_temp_prec')
-for station in station_files:
+summary_open = open(summary_out + os.sep + 'prec_depth_ratio_stats_' + str(tsnow)+'tsnow_'+str(start_temp) + '-'+str(max_temp)+'.txt','w')
+summary_open.write('TSNOW: ' + str(tsnow)+ '\n')
+summary_open.write('Analysis period:' + str(start)+' - '+str(finish) + '\n')
+summary_open.write('Temperature bounds: ' +str(start_temp) + ' - '+str(max_temp-0.1) + 'F\n')
+summary_open.write('Site' + '\t' + 'HSPF rain/snow ratio' + '\t' + 'ASOS rain/snow ratio' + '\n')
+for station in station_files:   
     ##### Call the appropriate dict of total precip ####
     if station == 'kord.txt':
         asos_tot_prcp = kord
@@ -225,6 +235,8 @@ for station in station_files:
         ############## Ratio difference text box ##################
         textstr = 'HSPF Rain/Snow Depth Ratio: ' + str("%.2f" % (float(total_rain_hspf)/total_snow_hspf)) + '\n' +\
             'ASOS Rain/Snow Depth Ratio: ' + str("%.2f" % (float(total_rain_asos)/total_snow_asos))
+            
+        summary_open.write(station[:-4] + '\t' + str("%.2f" % (float(total_rain_hspf)/total_snow_hspf)) + '\t' + str("%.2f" % (float(total_rain_asos)/total_snow_asos)) + '\n')
         # these are matplotlib.patch.Patch properties
         props = dict(boxstyle='round', facecolor = '0.8', alpha=0.5)
         
@@ -240,7 +252,9 @@ for station in station_files:
         else:
             ax1.set_xticklabels(tick_labels,rotation=45)
         ax1.legend(loc='upper right',prop={'size':12})
-        plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] + '_HSPF_vs_ASOS_tot_precip_' + str(tsnow) + '.png', dpi=150, bbox_inches='tight')
+        if plot_out == 'yes':
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\SNOTMP_obs_plots\\' + station[:-4] + '_HSPF_vs_ASOS_tot_precip_' + str(tsnow)+'_'+str(ystart)+'_'+str(yend)+'.png', dpi=150, bbox_inches='tight')
 
+summary_open.close()
 #close('all') #closes all figure windows
 print 'Complete'

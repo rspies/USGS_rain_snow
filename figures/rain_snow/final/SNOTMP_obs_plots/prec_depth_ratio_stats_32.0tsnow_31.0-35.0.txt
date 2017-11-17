@@ -1,0 +1,8 @@
+TSNOW: 32.0
+Analysis period:2006-01-01 00:00:00 - 2013-09-30 23:00:00
+Temperature bounds: 31.0 - 34.9F
+Site	HSPF rain/snow ratio	ASOS rain/snow ratio
+kdpa	1.49	1.69
+klot	1.61	2.73
+kord	0.97	1.23
+kpwk	1.04	1.47

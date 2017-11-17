@@ -20,15 +20,26 @@ max_temp = 36.6 #36.0 (ANL bar plot) #35.6 (asos bar plot)
 temp_interval = 1.0 #0.5 (ANL bar plot) #1.0 (asos bar plot)
 cat_num = (max_temp - min_temp)/temp_interval
 temp_source = 'asos' # choices: ['asos', 'argonne'] -> selects the temp source for the bar chart
-bar_plot = 'yes' # choices: ['yes', 'no'] -> this creates the bar chart
-percent_plot = 'no' # choices: ['yes', 'no'] -> 'yes' automatically adds plots for argonne and asos temps
+bar_plot = 'no' # choices: ['yes', 'no'] -> this creates the bar chart
+percent_plot = 'yes' # choices: ['yes', 'no'] -> 'yes' automatically adds plots for argonne and asos temps
 asos_name = {'KORD':'Chicago OHare','KLOT':'Romeoville/Lewis University','KDPA':'DuPage Airport','KPWK':'Palwaukee'}
-if percent_plot == 'yes' and bar_plot == 'no':
+#############################################################################
+ystart = 2006 # begin data grouping
+yend = 2013 # end data grouping
+start = datetime.datetime(ystart, 1, 1, 0, 0)
+finish = datetime.datetime(yend, 9, 30, 23, 0)
+#############################################################################
+if percent_plot == 'yes' and bar_plot == 'no': # define percent plot bounds
     temp_source = ['asos', 'argonne']
     min_temp = start_temp = 23.0
     max_temp = 36.0
     temp_interval = 0.5
     cat_num = (max_temp - min_temp)/temp_interval
+    summary_out = maindir + '\\figures\\rain_snow\\final\\ASOS_ANL_percent_plots\\'
+    summary_open = open(summary_out + os.sep + 'calc_threshold_temp_summary_' + str(ystart)+'-'+str(yend)+'.txt','w')
+    summary_open.write('Analysis period:' + str(start)+' - '+str(finish) + '\n')
+    #summary_open.write('Temperature bounds: ' +str(start_temp) + ' - '+str(max_temp-0.1) + 'F\n')
+    summary_open.write('Site' + '\t' + 'ASOS rain/snow tempF' + '\t' + 'ANL rain/snow tempF' + '\n')
 
 ################### Create temperature range categories ########################
 categories = {}
@@ -54,10 +65,7 @@ else:
 
 ################## Parse Argonne temperature file ################################    
 ################# create a list of days to use in the analysis ########################
-ystart = 2006 # begin data grouping
-yend = 2013 # end data grouping
-start = datetime.datetime(ystart, 1, 1, 0, 0)
-finish = datetime.datetime(yend, 9, 30, 23, 0)
+
 
 if temp_source == 'argonne' or percent_plot == 'yes':
     print 'Processing data for ' + 'Argonne hourly temperature...'
@@ -195,9 +203,9 @@ for station in station_files:
             ax1.set_xticklabels(tick_labels,rotation=45)
         ax1.legend(loc='upper right')
         if temp_source == 'asos':
-            plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] +'_'+temp_source+'_'+str(ystart)+'_'+str(yend)+'.png', dpi=150, bbox_inches='tight')
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\ASOS_plots\\' + station[:-4] +'_'+temp_source+'_'+str(ystart)+'_'+str(yend)+'.png', dpi=150, bbox_inches='tight')
         if temp_source == 'argonne':
-            plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4]+'_'+temp_source+'_temp_'+str(ystart)+'_'+str(yend)+'.png', dpi=150, bbox_inches='tight')
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\ANL_plots\\' + station[:-4]+'_'+temp_source+'_temp_'+str(ystart)+'_'+str(yend)+'.png', dpi=150, bbox_inches='tight')
     else:
         print 'User chose not to plot bar chart'
 ######################### add rain/snow percent plot ##########################    
@@ -214,6 +222,7 @@ for station in station_files:
         ax2.plot(x_new,y_new,color='red', lw = 1.5,label='Rain - ASOS')
         x_new, y_new, solve = my_plot_module.curve_fit(x,spcnt)
         print 'snow % solve temp = ' + str(round(solve[-2],2))
+        summary_open.write(station[:-4].upper() + '\t' + str(round(solve[-2],2)) + '\t') # summary file output
         ax2.plot(x,spcnt,color='blue',marker = 'o',ls = '')
         ax2.plot(x_new,y_new,color='blue', lw = 1.5, label='Snow - ASOS')        
         rpcnt = []; spcnt = []; x=[]        
@@ -223,7 +232,8 @@ for station in station_files:
         ax2.plot(x,rpcnt,color='red',marker = 'o', ls = '',mec = 'red',mfc='none')
         ax2.plot(x_new,y_new,color='red', lw = 1.5, ls = '--',label='Rain - Argonne')
         x_new, y_new, solve = my_plot_module.curve_fit(x,spcnt)
-        print 'snowa % solve temp = ' + str(round(solve[-2],2))        
+        print 'snowa % solve temp = ' + str(round(solve[-2],2))  
+        summary_open.write(str(round(solve[-2],2)) + '\n') # summary file output
         ax2.plot(x,spcnt,color='blue',marker = 'o', ls = '',mec = 'blue',mfc='none')
         ax2.plot(x_new,y_new,color='blue', lw = 1.5, ls = '--', label='Snow - Argonne')         
         
@@ -235,7 +245,9 @@ for station in station_files:
         ax2.grid(True)
         ax2.set_title(asos_name[station[:-4].upper()] + ' (' + station[:-4].upper() + ')'+ '\n' + str(start.month) + '/' + str(start.day) + '/' + str(start.year) + ' - ' + str(finish.month) + '/' + str(finish.day) + '/' + str(finish.year))
         ax2.legend(loc='center left')   
-        plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + station[:-4] + '_r-s_percent_'+str(ystart)+'_'+str(yend) + '.png', dpi=150, bbox_inches='tight')
+        plt.savefig(maindir + '\\figures\\rain_snow\\final\\ASOS_ANL_percent_plots\\' + station[:-4] + '_r-s_percent_'+str(ystart)+'_'+str(yend) + '.png', dpi=150, bbox_inches='tight')
 
+if percent_plot == 'yes':
+    summary_open.close()
 #close('all') #closes all figure windows
 print 'Complete'
