@@ -49,5 +49,5 @@ cbar.ax.set_ylabel(text, rotation=270,labelpad=20)
 ax1.set_xlabel('Dewpoint Depression (' + r'$^o$F)' + '\n' + '(Air Temperature - Dewpoint Temperature)')
 ax1.set_ylabel('Air Temperature (' + r'$^o$F)')
 ax1.set_title('SNOTMP Distribution\n (TSNOW = ' + str(TSNOW) + r'$^o$F)')
-plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + 'HSPF_SNOTMP_distribution_' + str(TSNOW) + '_final.png', dpi=150, bbox_inches='tight')
+plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + 'HSPF_SNOTMP_distribution_' + str(TSNOW) + '_final.pdf', dpi=150, bbox_inches='tight')
 print 'Completed!!!'

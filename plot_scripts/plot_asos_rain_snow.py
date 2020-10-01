@@ -15,14 +15,14 @@ plt.ioff()
 
 os.chdir("..")
 maindir = os.getcwd() + os.sep
-min_temp = start_temp = 27.6 #23.0 (use for % plot) #25.0 (ANL bar plot) #28.6 (asos bar plot)
-max_temp = 36.6 #36.0 (ANL bar plot) #35.6 (asos bar plot)
-temp_interval = 1.0 #0.5 (ANL bar plot) #1.0 (asos bar plot)
-cat_num = (max_temp - min_temp)/temp_interval
-temp_source = 'asos' # choices: ['asos', 'argonne'] -> selects the temp source for the bar chart
-bar_plot = 'no' # choices: ['yes', 'no'] -> this creates the bar chart
-percent_plot = 'yes' # choices: ['yes', 'no'] -> 'yes' automatically adds plots for argonne and asos temps
-asos_name = {'KORD':'Chicago OHare','KLOT':'Romeoville/Lewis University','KDPA':'DuPage Airport','KPWK':'Palwaukee'}
+#min_temp = start_temp = 27.6 #23.0 (use for % plot) #25.0 (ANL bar plot) #28.6 (asos bar plot)
+#max_temp = 36.6 #36.0 (ANL bar plot) #35.6 (asos bar plot)
+#temp_interval = 1.0 #0.5 (ANL bar plot) #1.0 (asos bar plot)
+#cat_num = (max_temp - min_temp)/temp_interval
+temp_source = 'argonne' # choices: ['asos', 'argonne'] -> selects the temp source for the bar chart
+bar_plot = 'yes' # choices: ['yes', 'no'] -> this creates the bar chart
+percent_plot = 'no' # choices: ['yes', 'no'] -> 'yes' automatically adds plots for argonne and asos temps
+asos_name = {'KORD':"Chicago O'Hare",'KLOT':'Romeoville/Lewis University','KDPA':'DuPage Airport','KPWK':'Palwaukee'}
 #############################################################################
 ystart = 2006 # begin data grouping
 yend = 2013 # end data grouping
@@ -40,6 +40,19 @@ if percent_plot == 'yes' and bar_plot == 'no': # define percent plot bounds
     summary_open.write('Analysis period:' + str(start)+' - '+str(finish) + '\n')
     #summary_open.write('Temperature bounds: ' +str(start_temp) + ' - '+str(max_temp-0.1) + 'F\n')
     summary_open.write('Site' + '\t' + 'ASOS rain/snow tempF' + '\t' + 'ANL rain/snow tempF' + '\n')
+    
+#############################################################################
+if percent_plot == 'no' and bar_plot == 'yes': # define percent plot bounds
+    if temp_source == 'asos':
+        min_temp = start_temp = 27.6
+        max_temp = 36.6
+        temp_interval = 1.0
+        cat_num = (max_temp - min_temp)/temp_interval
+    if temp_source == 'argonne':
+        min_temp = start_temp = 25.0
+        max_temp = 36.0
+        temp_interval = 0.5
+        cat_num = (max_temp - min_temp)/temp_interval
 
 ################### Create temperature range categories ########################
 categories = {}
@@ -203,9 +216,11 @@ for station in station_files:
             ax1.set_xticklabels(tick_labels,rotation=45)
         ax1.legend(loc='upper right')
         if temp_source == 'asos':
-            plt.savefig(maindir + '\\figures\\rain_snow\\final\\ASOS_plots\\' + station[:-4] +'_'+temp_source+'_'+str(ystart)+'_'+str(yend)+'.png', dpi=150, bbox_inches='tight')
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\ASOS_plots\\' + station[:-4] +'_'+temp_source+'_'+str(ystart)+'_'+str(yend)+'.pdf', dpi=150, bbox_inches='tight')
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\ASOS_plots\\' + station[:-4] +'_'+temp_source+'_'+str(ystart)+'_'+str(yend)+'.svg', dpi=150, bbox_inches='tight')
         if temp_source == 'argonne':
-            plt.savefig(maindir + '\\figures\\rain_snow\\final\\ANL_plots\\' + station[:-4]+'_'+temp_source+'_temp_'+str(ystart)+'_'+str(yend)+'.png', dpi=150, bbox_inches='tight')
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\ANL_plots\\' + station[:-4]+'_'+temp_source+'_temp_'+str(ystart)+'_'+str(yend)+'.pdf', dpi=150, bbox_inches='tight')
+            plt.savefig(maindir + '\\figures\\rain_snow\\final\\ANL_plots\\' + station[:-4]+'_'+temp_source+'_temp_'+str(ystart)+'_'+str(yend)+'.svg', dpi=150, bbox_inches='tight')
     else:
         print 'User chose not to plot bar chart'
 ######################### add rain/snow percent plot ##########################    
@@ -237,7 +252,7 @@ for station in station_files:
         ax2.plot(x,spcnt,color='blue',marker = 'o', ls = '',mec = 'blue',mfc='none')
         ax2.plot(x_new,y_new,color='blue', lw = 1.5, ls = '--', label='Snow - Argonne')         
         
-        ax2.set_ylabel('Percent of ASOS Precipitation Observions')
+        ax2.set_ylabel('Percent of ASOS Precipitation Observations')
         ax2.set_xlabel('Temperature (' + r'$^o$F)')
         ax2.set_ylim(0,100)
         # set limits below to ignore edge effects of poly trend line
@@ -245,7 +260,8 @@ for station in station_files:
         ax2.grid(True)
         ax2.set_title(asos_name[station[:-4].upper()] + ' (' + station[:-4].upper() + ')'+ '\n' + str(start.month) + '/' + str(start.day) + '/' + str(start.year) + ' - ' + str(finish.month) + '/' + str(finish.day) + '/' + str(finish.year))
         ax2.legend(loc='center left')   
-        plt.savefig(maindir + '\\figures\\rain_snow\\final\\ASOS_ANL_percent_plots\\' + station[:-4] + '_r-s_percent_'+str(ystart)+'_'+str(yend) + '.png', dpi=150, bbox_inches='tight')
+        plt.savefig(maindir + '\\figures\\rain_snow\\final\\ASOS_ANL_percent_plots\\' + station[:-4] + '_r-s_percent_'+str(ystart)+'_'+str(yend) + '.pdf', dpi=150, bbox_inches='tight')
+        plt.savefig(maindir + '\\figures\\rain_snow\\final\\ASOS_ANL_percent_plots\\' + station[:-4] + '_r-s_percent_'+str(ystart)+'_'+str(yend) + '.svg', dpi=150, bbox_inches='tight')
 
 if percent_plot == 'yes':
     summary_open.close()
