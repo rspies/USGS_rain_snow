@@ -203,7 +203,7 @@ for station in station_files:
             ax1.set_title(station[:-4].upper() + ': ' + asos_name[station[:-4].upper()] + ' ASOS\n' + str(start.month) + '/' + str(start.day) + '/' + str(start.year) + ' - ' + str(finish.month) + '/' + str(finish.day) + '/' + str(finish.year))
             ax1.set_xlabel('Temperature (' + r'$^o$F)')
         elif temp_source == 'argonne':
-            ax1.set_title(station[:-4].upper() + ': ' + asos_name[station[:-4].upper()] + ' ASOS Precipitation Phase Observations &\n' + 'ANL Temperature Data (' + str(start.month) + '/' + str(start.day) + '/' + str(start.year) + ' - ' + str(finish.month) + '/' + str(finish.day) + '/' + str(finish.year) + ')',fontsize=14)
+            ax1.set_title(station[:-4].upper() + ': ' + asos_name[station[:-4].upper()] + '\nASOS Precipitation Phase Observations &\n' + 'ANL Temperature Data (' + str(start.month) + '/' + str(start.day) + '/' + str(start.year) + ' - ' + str(finish.month) + '/' + str(finish.day) + '/' + str(finish.year) + ')',fontsize=12)
             ax1.set_xlabel('ANL Temperature (' + r'$^o$F)')
         tick_num = np.arange(len(categories))
         ax1.set_xticks(tick_num+width)
