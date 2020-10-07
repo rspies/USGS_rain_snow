@@ -6,6 +6,10 @@
 
 import os
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42    # need this to export editable text (edit in adobe) http://jonathansoma.com/lede/data-studio/matplotlib/exporting-from-matplotlib-to-open-in-adobe-illustrator/
+matplotlib.rcParams['ps.fonttype'] = 42     # need this to export editable text (edit in adobe)
+plt.rcParams['svg.fonttype'] = 'none'
 import numpy as np
 from dateutil import parser
 import datetime
@@ -20,8 +24,8 @@ maindir = os.getcwd() + os.sep
 #temp_interval = 1.0 #0.5 (ANL bar plot) #1.0 (asos bar plot)
 #cat_num = (max_temp - min_temp)/temp_interval
 temp_source = 'argonne' # choices: ['asos', 'argonne'] -> selects the temp source for the bar chart
-bar_plot = 'yes' # choices: ['yes', 'no'] -> this creates the bar chart
-percent_plot = 'no' # choices: ['yes', 'no'] -> 'yes' automatically adds plots for argonne and asos temps
+bar_plot = 'no' # choices: ['yes', 'no'] -> this creates the bar chart
+percent_plot = 'yes' # choices: ['yes', 'no'] -> 'yes' automatically adds plots for argonne and asos temps
 asos_name = {'KORD':"Chicago O'Hare",'KLOT':'Romeoville/Lewis University','KDPA':'DuPage Airport','KPWK':'Palwaukee'}
 #############################################################################
 ystart = 2006 # begin data grouping

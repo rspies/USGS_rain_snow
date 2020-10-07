@@ -7,6 +7,10 @@
 
 import os
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42    # need this to export editable text (edit in adobe) http://jonathansoma.com/lede/data-studio/matplotlib/exporting-from-matplotlib-to-open-in-adobe-illustrator/
+matplotlib.rcParams['ps.fonttype'] = 42     # need this to export editable text (edit in adobe)
+plt.rcParams['svg.fonttype'] = 'none'
 import numpy as np
 from dateutil import parser
 import datetime
@@ -22,7 +26,7 @@ max_temp = 35.0                 #35.0 #35.6 #33.5
 temp_interval = 0.5             #1.0
 cat_num = (max_temp - min_temp)/temp_interval
 asos_name = {'KORD':"Chicago O'Hare",'KLOT':'Romeoville/Lewis University','KDPA':'DuPage Airport','KPWK':'Palwaukee'}
-tsnow = 32.0                    # 32.5 32.0 31.5
+tsnow = 32.5                    # 32.5 32.0 31.5
 plot_out = 'yes' # 'yes' or 'no' for saving the plot (can run for just stats output)
 summary_out = maindir + '\\figures\\rain_snow\\final\\SNOTMP_obs_plots\\' 
 ################### Create temperature range categories ########################

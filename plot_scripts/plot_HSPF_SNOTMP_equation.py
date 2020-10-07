@@ -7,6 +7,10 @@
 
 import os
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42    # need this to export editable text (edit in adobe) http://jonathansoma.com/lede/data-studio/matplotlib/exporting-from-matplotlib-to-open-in-adobe-illustrator/
+matplotlib.rcParams['ps.fonttype'] = 42     # need this to export editable text (edit in adobe)
+plt.rcParams['svg.fonttype'] = 'none'
 from matplotlib import cm
 from matplotlib import ticker
 import numpy as np
@@ -50,4 +54,5 @@ ax1.set_xlabel('Dewpoint Depression (' + r'$^o$F)' + '\n' + '(Air Temperature - 
 ax1.set_ylabel('Air Temperature (' + r'$^o$F)')
 ax1.set_title('SNOTMP Distribution\n (TSNOW = ' + str(TSNOW) + r'$^o$F)')
 plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + 'HSPF_SNOTMP_distribution_' + str(TSNOW) + '_final.pdf', dpi=150, bbox_inches='tight')
+plt.savefig(maindir + '\\figures\\rain_snow\\final\\' + 'HSPF_SNOTMP_distribution_' + str(TSNOW) + '_final.svg', dpi=150, bbox_inches='tight')
 print 'Completed!!!'

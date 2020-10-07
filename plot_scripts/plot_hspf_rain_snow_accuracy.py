@@ -7,6 +7,22 @@
 
 import os
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42    # need this to export editable text (edit in adobe) http://jonathansoma.com/lede/data-studio/matplotlib/exporting-from-matplotlib-to-open-in-adobe-illustrator/
+matplotlib.rcParams['ps.fonttype'] = 42     # need this to export editable text (edit in adobe)
+plt.rcParams['svg.fonttype'] = 'none'
+
+#matplotlib.rcParams['font.sans-serif'] = "Arial"
+#plt.rcParams['font.family'] = 'sans-serif'
+#plt.rcParams['font.sans-serif'] = ['Tahoma']
+#matplotlib.rc('font', family='sans-serif') 
+#matplotlib.rc('font', serif='Trebuchet MS') 
+#plt.rcParams['font.family'] = 'sans-serif'
+#plt.rcParams['font.sans-serif'] = ['Arial','sans-serif']
+#plt.rcParams.update({
+#    "text.usetex": True,
+#    "font.family": "sans-serif",
+#    "font.sans-serif": ["Helvetica"]})
 import numpy as np
 from dateutil import parser
 import datetime
@@ -22,7 +38,7 @@ max_temp = 35.0 #35.6 #33.5 #35.0
 temp_interval = 0.5 #1.0 #
 cat_num = (max_temp - min_temp)/temp_interval
 asos_name = {'KORD':"Chicago O'Hare",'KLOT':'Romeoville/Lewis University','KDPA':'DuPage Airport','KPWK':'Palwaukee'}
-tsnow = 32.0 # 32.5 32.0 31.5
+tsnow = 32.5 # 32.5 32.0 31.5
 plot_out = 'yes' # 'yes' or 'no' for saving the plot (can run for just stats output)
 summary_out = maindir + '\\figures\\rain_snow\\final\\SNOTMP_obs_plots\\' 
 ################### Create temperature range categories ########################
@@ -176,7 +192,6 @@ for station in station_files:
         if plot_out == 'yes':
             plt.savefig(maindir + '\\figures\\rain_snow\\final\\SNOTMP_obs_plots\\' + station[:-4] + '_HSPF_vs_ASOS_' + str(tsnow)+'_'+str(ystart)+'_'+str(yend)+'.pdf', dpi=150, bbox_inches='tight')
             plt.savefig(maindir + '\\figures\\rain_snow\\final\\SNOTMP_obs_plots\\' + station[:-4] + '_HSPF_vs_ASOS_' + str(tsnow)+'_'+str(ystart)+'_'+str(yend)+'.svg', dpi=150, bbox_inches='tight')
-
 summary_open.close()
 #close('all') #closes all figure windows
 print 'Complete'
